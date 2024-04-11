@@ -43,6 +43,9 @@ public class Eta {
 
     
     public PropAtom getPropVariable(Formula f) {
+        if (m.get(f) == null) 
+            throw new NullPointerException("Formula " + f + " has no mapping");
+
         return m.get(f);
     }
 

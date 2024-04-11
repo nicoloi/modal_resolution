@@ -5,16 +5,19 @@ import formula.*;
 
 public class App {
     public static void main(String[] args) {
-        Formula a = new AtomicFormula("a");
-        Formula b = new AtomicFormula("b");
-        CompoundFormula cp1 = new CompoundFormula(OR, new CompoundFormula(NOT, a), b);
-        CompoundFormula cp2 = new CompoundFormula(OR, b, new CompoundFormula(NOT, a));
-        CompoundFormula or = new CompoundFormula(AND, cp1, cp2);
-        System.out.println(cp1.equals(cp2));
+        Formula p = new AtomicFormula("p");
+        Formula q = new AtomicFormula("q");
 
-        Eta eta = new Eta(or);
+        Formula phi1 = new CompoundFormula(AND, new CompoundFormula(BOX, p), 
+            new CompoundFormula(BOX, q)); // #p & #q
+        Formula phi2 = new CompoundFormula(BOX, new CompoundFormula(AND, p, q)); // #(p & q)
+        Formula phi = new CompoundFormula(IMPLIES, phi1, phi2);
 
-        System.out.println(eta);
+        Formula not_phi = new CompoundFormula(NOT, phi);
+
+        System.out.println(not_phi + "\n");
+
+        System.out.println(not_phi.toClauseSet());
     }
 }
 

@@ -1,8 +1,12 @@
 package formula;
 
 import connective.Connective;
+import literal.ModalAtom;
+import literal.PropAtom;
+
 import static connective.Connective.*;
 import clauses.ClauseSet;
+import clauses.GlobalClause;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -184,15 +188,82 @@ public class CompoundFormula extends Formula {
     public int hashCode() {
         return 1;
     }
-
-
-
-
-
+    
     @Override
-    public ClauseSet toClauseSet() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toClauseSet'");
+    // recursive case of function R
+    protected ClauseSet R(PropAtom t) {
+        Formula psi = this.getLeftSubformula(); // psi
+        PropAtom etaPsi = eta.getPropVariable(psi); // eta(psi)
+        ClauseSet res = new ClauseSet();
+
+        switch (this.mainConnective) {
+            case NOT:
+                // {G({~t, ~eta(psi)}), G({t, eta(psi)})}  U  R(G(eta(psi) <-> psi))
+
+                if ((psi instanceof CompoundFormula) && ((CompoundFormula)psi).mainConnective == NOT) {
+                    //case of double negation (~~psi)
+                    Formula f = ((CompoundFormula) psi).getLeftSubformula();
+                    return f.R(eta.getPropVariable(this));
+                }
+
+                GlobalClause gc1 = new GlobalClause(); // G({~t, ~eta(psi)})
+                gc1.add(t.getOpposite());
+                gc1.add(etaPsi.getOpposite());
+                res.add(gc1);
+
+                GlobalClause gc2 = new GlobalClause(); // G({t, eta(psi)})
+                gc2.add(t);
+                gc2.add(etaPsi);
+                res.add(gc2);
+
+                return res.union(psi.R(etaPsi)); // res  U  R(G(eta(psi) <-> psi))
+            case OR:
+                // {G({~t, eta(psi), eta(psi_prime)}), G({t, ~eta(psi)}), 
+                // G({t, ~eta(psi_prime)})}  U  R(G(eta(psi) <-> psi)) 
+                // U  R(G(eta(psi_prime) <-> psi_prime))
+                Formula psi_prime = this.getRightSubformula();
+                PropAtom etaPsi_prime = eta.getPropVariable(psi_prime);
+
+                gc1 = new GlobalClause(); // G({~t, eta(psi), eta(psi_prime)})
+                gc1.add(t.getOpposite());
+                gc1.add(etaPsi);
+                gc1.add(etaPsi_prime);
+                res.add(gc1);
+
+                gc2 = new GlobalClause(); // G({t, ~eta(psi)})
+                gc2.add(t);
+                gc2.add(etaPsi.getOpposite());
+                res.add(gc2);
+
+                GlobalClause gc3 = new GlobalClause(); // G({t, ~eta(psi_prime)})}
+                gc3.add(t);
+                gc3.add(etaPsi_prime.getOpposite());
+                res.add(gc3);
+
+                return (res.union(psi.R(etaPsi))).union(psi_prime.R(etaPsi_prime));
+                    // res  U  R(G(etaPsi <-> psi))  U  R(G(etaPsi_prime <-> psi_prime))
+            case BOX:
+                // {G({~t, #eta(psi)}), G({t, ~#eta(psi)})}  U  R(G(eta(psi) <-> psi))
+                ModalAtom boxEtaPsi = new ModalAtom(etaPsi.getName());
+
+                gc1 = new GlobalClause(); // G({~t, #eta(psi)})
+                gc1.add(t.getOpposite());
+                gc1.add(boxEtaPsi);
+                res.add(gc1);
+
+                gc2 = new GlobalClause(); // G({t, ~#eta(psi)})
+                gc2.add(t);
+                gc2.add(boxEtaPsi.getOpposite());
+                res.add(gc2);
+
+                return res.union(psi.R(etaPsi)); //res  U  R(G(etaPsi <-> psi))
+            default:
+                throw new UnsupportedOperationException("the formula is not valid");
+        }
     }
+
+
+
+
 
 }
