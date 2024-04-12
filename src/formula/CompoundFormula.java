@@ -1,13 +1,9 @@
 package formula;
 
-import connective.Connective;
-import literal.ModalAtom;
-import literal.PropAtom;
-
+import literal.*;
+import clauses.*;
 import static connective.Connective.*;
-import clauses.ClauseSet;
-import clauses.GlobalClause;
-
+import connective.Connective;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -34,27 +30,27 @@ public class CompoundFormula extends Formula {
 
         Objects.requireNonNull(f1, "one or both formulas are null.");
         Objects.requireNonNull(f2, "one or both formulas are null.");  
-        subFormulas = new Formula[2];
+        this.subFormulas = new Formula[2];
 
         switch (mainConnective) {
             case OR:
-                subFormulas = new Formula[2];
-                subFormulas[0] = f1;
-                subFormulas[1] = f2;
+                this.subFormulas = new Formula[2];
+                this.subFormulas[0] = f1;
+                this.subFormulas[1] = f2;
                 this.mainConnective = OR;
                 break;
             case AND:
                 //(f1 & f2) becomes ~(~f1 | ~f2)
-                subFormulas = new Formula[1];
-                subFormulas[0] = new CompoundFormula(OR, new CompoundFormula(NOT, f1),
+                this.subFormulas = new Formula[1];
+                this.subFormulas[0] = new CompoundFormula(OR, new CompoundFormula(NOT, f1),
                     new CompoundFormula(NOT, f2));
                 this.mainConnective = NOT;
                 break;
             case IMPLIES:
                 //(f1 -> f2) becomes (~f1 | f2)
-                subFormulas = new Formula[2];
-                subFormulas[0] = new CompoundFormula(NOT, f1);
-                subFormulas[1] = f2;
+                this.subFormulas = new Formula[2];
+                this.subFormulas[0] = new CompoundFormula(NOT, f1);
+                this.subFormulas[1] = f2;
                 this.mainConnective = OR;
                 break;
             case IFF:
@@ -65,8 +61,8 @@ public class CompoundFormula extends Formula {
                 CompoundFormula right = new CompoundFormula(NOT, new CompoundFormula(OR, 
                 f1, new CompoundFormula(NOT, f2)));
                 
-                subFormulas = new Formula[1];
-                subFormulas[0] = new CompoundFormula(OR, left, right);
+                this.subFormulas = new Formula[1];
+                this.subFormulas[0] = new CompoundFormula(OR, left, right);
                 this.mainConnective = NOT;
                 break;
             default:
@@ -90,8 +86,8 @@ public class CompoundFormula extends Formula {
         }
 
         Objects.requireNonNull(f, "The formula is null");
-        subFormulas = new Formula[1];
-        subFormulas[0] = f;
+        this.subFormulas = new Formula[1];
+        this.subFormulas[0] = f;
 
         this.mainConnective = mainConnective;
     }
