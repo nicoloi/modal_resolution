@@ -1,19 +1,29 @@
-// import literal.*;
-// import clauses.*;
-import static connective.Connective.*;
+import java.util.Scanner;
+import clauses.*;
+// import static connective.Connective.*;
+import antlr4.ParseFormula;
 import formula.*;
 
 public class App {
     public static void main(String[] args) {
-        Formula a = new AtomicFormula("a");
-        Formula b = new AtomicFormula("b");
+        Scanner sc = new Scanner(System.in);
+        String formulaStr = sc.nextLine();
+        sc.close();
 
-        Formula phi = new CompoundFormula(BOX, new CompoundFormula(AND, a, b)); // #(p | q)
+        Formula f = ParseFormula.parse(formulaStr);
 
-        // Formula not_phi = new CompoundFormula(NOT, phi);
+        if (f == null) {
+            System.out.println("\nYour formula in input is not a well-formed formula");
+            return;
+        }
 
-        System.out.println(phi + "\n");
+        System.out.println("\nYour formula in input:");
+        System.out.println(f);
 
-        System.out.println(phi.toClauseSet());
+        ClauseSet reduction = f.toClauseSet();
+
+        System.out.println("\nThe corresponding clause set is:");
+        System.out.println(reduction);
+        System.out.println();
     }
 }
