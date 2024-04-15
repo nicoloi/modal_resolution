@@ -2,7 +2,11 @@ package literal;
 
 import java.util.Objects;
 
-
+/**
+ * This abstract class represents a literal in modal logic,
+ * which can be a propositional atom or modal atom, and their
+ * opposites
+ */
 public abstract class Literal {
 
     //FIELDS

@@ -1,5 +1,8 @@
 package literal;
 
+/**
+ * this class represents a propositional literal.
+ */
 public class PropAtom extends Literal {
 
     //CONSTRUCTORS

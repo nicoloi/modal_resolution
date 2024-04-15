@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ *  This class represents a formula as a set of clauses.
+ */
 public class ClauseSet implements Iterable<Clause> {
     
     //FIELDS

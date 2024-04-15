@@ -3,6 +3,10 @@ package formula;
 import literal.*;
 import clauses.*;
 
+/**
+ * This class represents an atomic formula. An atomic formula 
+ * contains only a propositional literal.
+ */
 public class AtomicFormula extends Formula {
 
     //FIELDS

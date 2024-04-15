@@ -1,9 +1,9 @@
 package literal;
 
 /**
- * The ModalAtom class represents a modal literal in modal logic.
- * A modal literal is a propotitional variable prefixed by the
- * modal operator '#'.
+ * This class class represents a modal literal.
+ * A modal literal is a propositional variable prefixed by the
+ * modal operator 'box' (#).
  */
 public class ModalAtom extends Literal {
 

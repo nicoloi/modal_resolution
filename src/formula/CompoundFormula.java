@@ -7,6 +7,11 @@ import connective.Connective;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * this class represents a compound formula. which consists of a formula
+ * obtained using a modal connective or propositional connective on other
+ * formulas, which can be atomic or themselves composite.
+ */
 public class CompoundFormula extends Formula {
 
     //FIELDS

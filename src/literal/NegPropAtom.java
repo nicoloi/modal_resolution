@@ -1,5 +1,8 @@
 package literal;
 
+/**
+ * this class represents a negated propositional literal.
+ */
 public class NegPropAtom extends Literal {
     
     //CONSTRUCTORS

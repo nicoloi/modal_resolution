@@ -37,7 +37,7 @@ public class Eta {
      * @param f The logical formula from which to create the map.
      */
     private void createMap(Formula f) {
-        PropAtom propVar = new PropAtom("$p" + i);  // $p1, $p2, etc...
+        PropAtom propVar = new PropAtom("$p" + i);  // $p0, $p1, etc...
         i++;
 
         if (!m.containsKey(f)) {

@@ -1,5 +1,8 @@
 package literal;
 
+/**
+ * This class represents a negated modal literal.
+ */
 public class NegModalAtom extends Literal {
 
     //CONSTRUCTORS

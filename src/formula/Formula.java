@@ -5,9 +5,8 @@ import clauses.LocalClause;
 import literal.PropAtom;
 
 /**
- * This abstract class represents a logical formula in modal logic.
- * Subclasses of Formula define atomic formulas and compound formulas,
- * compound formulas.
+ * This abstract class represents a logical formula in modal logics.
+ * Subclasses of Formula define atomic formulas and compound formulas.
  */
 public abstract class Formula {
 

@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ * This abstract class represents a logical clause in modal logic.
+ * A clause can be empty or contain one or more literals,
+ * and they can be a local clause, or global clause.
+ */
 public abstract class Clause implements Iterable<Literal> {
     
     //STATIC FIELDS 

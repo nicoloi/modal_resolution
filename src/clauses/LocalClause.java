@@ -4,7 +4,10 @@ import java.util.List;
 import literal.Literal;
 import java.util.Objects;
 
-
+/*
+ * this class represents a local clause, i.e. a clause
+ * that is true in at least one world in a model.
+ */
 public class LocalClause extends Clause {
 
     //CONSTRUCTORS

@@ -4,6 +4,10 @@ import java.util.List;
 import literal.Literal;
 import java.util.Objects;
 
+/*
+ * this class represents a global clause, i.e. a clause that
+ * is true in every world in a model.
+ */
 public class GlobalClause extends Clause {
 
     //CONSTRUCTORS
