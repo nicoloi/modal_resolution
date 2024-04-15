@@ -46,6 +46,11 @@ public class AtomicFormula extends Formula {
     }
 
     @Override
+    public int hashCode() {
+        return atm.getName().hashCode();
+    }
+
+    @Override
     public String toString() {
         return this.getName();
     }
