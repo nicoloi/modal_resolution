@@ -50,6 +50,6 @@ public abstract class Literal {
 
     @Override
     public int hashCode() {
-        return 1;
+        return this.name.hashCode();
     }
 }
