@@ -201,11 +201,11 @@ public class CompoundFormula extends Formula {
             case NOT:
                 // {G({~t, ~eta(psi)}), G({t, eta(psi)})}  U  R(G(eta(psi) <-> psi))
 
-                if ((psi instanceof CompoundFormula) && ((CompoundFormula)psi).mainConnective == NOT) {
-                    //case of double negation (~~psi)
-                    Formula f = ((CompoundFormula) psi).getLeftSubformula();
-                    return f.R(eta.getPropVariable(this));
-                }
+                // if ((psi instanceof CompoundFormula) && ((CompoundFormula)psi).mainConnective == NOT) {
+                //     //case of double negation (~~psi)
+                //     Formula f = ((CompoundFormula) psi).getLeftSubformula();
+                //     return f.R(eta.getPropVariable(this));
+                // }
 
                 GlobalClause gc1 = new GlobalClause(); // G({~t, ~eta(psi)})
                 gc1.add(t.getOpposite());

@@ -176,7 +176,7 @@ public class ClauseSet implements Iterable<Clause> {
             if (first) {
                 res.append(c.toString());
             } else {
-                res.append("; " + c.toString());
+                res.append(";\n" + c.toString());
             }
 
             first = false;

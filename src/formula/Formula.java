@@ -20,6 +20,8 @@ public abstract class Formula {
     public ClauseSet toClauseSet() {
         eta = new Eta(this);
 
+        // System.out.println("\n" + eta);
+
         PropAtom t = eta.getPropVariable(this);
         ClauseSet cs = new ClauseSet(new LocalClause(t)); // {eta(phi)}
         return cs.union(this.R(t)); // {eta(phi)}  U  R(G(eta(phi) <-> phi))
