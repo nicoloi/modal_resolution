@@ -56,21 +56,13 @@ public class AtomicFormula extends Formula {
     }
 
     @Override
-    //base case of function R
-    protected ClauseSet R(PropAtom t) {
-        ClauseSet res = new ClauseSet();
+    public ClauseSet toClauseSet() {
 
-        GlobalClause gc1 = new GlobalClause(); // G({~t, p})
-        gc1.add(t.getOpposite());
-        gc1.add(this.toLiteral());
-
-        GlobalClause gc2 = new GlobalClause(); // G({t, ~p})
-        gc2.add(t);
-        gc2.add(this.toLiteral().getOpposite());
-
-        res.add(gc1);
-        res.add(gc2);
-
-        return res;
+        // eta(this) = this
+        eta = new Eta(this);
+    
+        PropAtom t = eta.getPropVariable(this);
+        ClauseSet cs = new ClauseSet(new LocalClause(t));
+        return cs;
     }
 }

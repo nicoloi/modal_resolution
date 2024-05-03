@@ -37,15 +37,32 @@ public class Eta {
      * @param f The logical formula from which to create the map.
      */
     private void createMap(Formula f) {
-        PropAtom propVar = new PropAtom("$p" + i);  // $p0, $p1, etc...
-        i++;
 
-        if (!m.containsKey(f)) {
-            m.put(f, propVar);
-        }
+        if (f instanceof AtomicFormula) {
+            AtomicFormula af = (AtomicFormula) f;
+            m.put(f, (PropAtom) af.toLiteral()); 
 
-        if (f instanceof CompoundFormula) {
+        } else {
             CompoundFormula cf = (CompoundFormula) f;
+
+            if ((cf.getMainConnective() == NOT) && (cf.getLeftSubformula() instanceof CompoundFormula)) {
+                CompoundFormula left = (CompoundFormula) cf.getLeftSubformula();
+
+                if (left.getMainConnective() == NOT) {
+                    //double negation
+                    this.createMap(left.getLeftSubformula());
+                    m.put(f, this.getPropVariable(left.getLeftSubformula()));
+                    return;
+                }
+            }
+
+            PropAtom propVar = new PropAtom("$p" + i);  // $p0, $p1, etc...
+            i++;
+            
+            if (!m.containsKey(f)) {
+                m.put(f, propVar);
+            }
+            
             if (cf.getMainConnective() == NOT || cf.getMainConnective() == BOX) {
                 this.createMap(cf.getLeftSubformula());
             } else {

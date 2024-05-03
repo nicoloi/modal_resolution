@@ -91,6 +91,27 @@ public class Resolution {
                             return false;
                         }
 
+                        //TODO
+                        if (resolvent.size() == 1) {
+                            Clause opposite;
+                            Literal oppLiteral = null;
+                            for (Literal l : resolvent) {
+                                oppLiteral = l.getOpposite();
+                            }
+
+                            if (resolvent instanceof GlobalClause) {
+                                opposite = new GlobalClause(oppLiteral);
+                            } else {
+                                opposite = new LocalClause(oppLiteral);
+                            }
+
+                            if (listCl.contains(opposite)) {
+                                if (enableSteps) printTrace();
+                                System.out.println("esiste clausola che contiene solo il letterale: " + oppLiteral);
+                                return false;
+                            }
+                        }
+
                         if (resolvent.isTautology()) {
                             if (enableSteps)
                                 step.setTautology();
