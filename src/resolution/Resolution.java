@@ -93,21 +93,27 @@ public class Resolution {
 
                         //TODO
                         if (resolvent.size() == 1) {
-                            Clause opposite;
                             Literal oppLiteral = null;
+
                             for (Literal l : resolvent) {
                                 oppLiteral = l.getOpposite();
                             }
 
-                            if (resolvent instanceof GlobalClause) {
-                                opposite = new GlobalClause(oppLiteral);
-                            } else {
-                                opposite = new LocalClause(oppLiteral);
-                            }
+                            Clause opposite_local = new LocalClause(oppLiteral);
+                            Clause opposite_global = new GlobalClause(oppLiteral);
+                        
+                            if (listCl.contains(opposite_local) || listCl.contains(opposite_global)) {
+                                if (enableSteps) {
+                                    Step st = null;
+                                    if (resolvent instanceof GlobalClause) {
+                                        st = new Step(G2L(resolvent), opposite_local, new LocalClause(), oppLiteral, "LRES");
+                                    } else {
+                                        st = new Step(resolvent, opposite_local, new LocalClause(), oppLiteral, "LRES");
+                                    }
 
-                            if (listCl.contains(opposite)) {
-                                if (enableSteps) printTrace();
-                                System.out.println("esiste clausola che contiene solo il letterale: " + oppLiteral);
+                                    trace.add(st);
+                                    printTrace();
+                                } 
                                 return false;
                             }
                         }
@@ -158,7 +164,33 @@ public class Resolution {
                                 return false;
                             }
 
+                            //TODO
+                            if (resolvent.size() == 1) {
+                                Literal oppLiteral = null;
 
+                                for (Literal l : resolvent) {
+                                    oppLiteral = l.getOpposite();
+                                }
+
+                                Clause opposite_local = new LocalClause(oppLiteral);
+                                Clause opposite_global = new GlobalClause(oppLiteral);
+                            
+                                if (listCl.contains(opposite_local) || listCl.contains(opposite_global)) {
+                                    if (enableSteps) {
+                                        Step st = null;
+                                        if (resolvent instanceof GlobalClause) {
+                                            st = new Step(G2L(resolvent), opposite_local, new LocalClause(), oppLiteral, "LRES");
+                                        } else {
+                                            st = new Step(resolvent, opposite_local, new LocalClause(), oppLiteral, "LRES");
+                                        }
+
+                                        trace.add(st);
+                                        printTrace();
+                                    } 
+                                    return false;
+                                }
+                            }
+                            
                             if (resolvent.isTautology()) {
                                 if (enableSteps)
                                     step.setTautology();

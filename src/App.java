@@ -2,9 +2,7 @@ import java.util.Scanner;
 import clauses.*;
 import antlr4.ParseFormula;
 import formula.*;
-// import literal.*;
-// import static connective.Connective.*;
-// import literal.*;
+import static connective.Connective.*;
 import resolution.Resolution;
 
 public class App {
@@ -23,9 +21,12 @@ public class App {
         System.out.println("\nYour formula in input:");
         System.out.println(f);
 
-        ClauseSet reduction = f.toClauseSet();
+        //negate formula f
+        Formula not_f = new CompoundFormula(NOT, f);
 
-        System.out.println("\nThe corresponding clause set is:");
+        ClauseSet reduction = not_f.toClauseSet();
+
+        System.out.println("\nThe corresponding clause set of the negation is:");
         System.out.println(reduction);
         System.out.println();
 
@@ -34,9 +35,9 @@ public class App {
         }
 
         if (Resolution.isSatisfiable(reduction)) {
-            System.out.println("SATISFIABLE");
+            System.out.println("The formula is NOT a tautology");
         } else {
-            System.out.println("UNSATISFIABLE");
+            System.out.println("The formula is a tautology");
         }
     }
 

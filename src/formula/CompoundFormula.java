@@ -63,16 +63,15 @@ public class CompoundFormula extends Formula {
                 this.mainConnective = OR;
                 break;
             case IFF:
-                //(f1 <-> f2) becomes ~(~(~f1 | f2) | ~(f1 | ~f2))
-                CompoundFormula left = new CompoundFormula(NOT, new CompoundFormula(OR, 
-                new CompoundFormula(NOT, f1), f2));
+                //(f1 <-> f2) becomes (~f1 | f2) & (f1 | ~f2)
+                CompoundFormula left = new CompoundFormula(IMPLIES, f1, f2);
                 
-                CompoundFormula right = new CompoundFormula(NOT, new CompoundFormula(OR, 
-                f1, new CompoundFormula(NOT, f2)));
+                CompoundFormula right = new CompoundFormula(IMPLIES, f2, f1);
                 
-                this.subFormulas = new Formula[1];
-                this.subFormulas[0] = new CompoundFormula(OR, left, right);
-                this.mainConnective = NOT;
+                this.subFormulas = new Formula[2];
+                this.subFormulas[0] = left;
+                this.subFormulas[1] = right;
+                this.mainConnective = AND;
                 break;
             default:
                 //case of unary connective
