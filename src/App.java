@@ -53,12 +53,12 @@ public class App {
     //     c2.add(new NegModalAtom("f"));
 
     //     GlobalClause c = new GlobalClause();
-    //     c.add(new NegPropAtom("c"));
+    //     // c.add(new NegPropAtom("c"));
     //     c.add(new PropAtom("f"));
 
     //     GlobalClause c_prime = new GlobalClause();
     //     c_prime.add(new PropAtom("c"));
-    //     // c_prime.add(new NegPropAtom("f"));
+    //     c_prime.add(new NegPropAtom("f"));
 
     //     ClauseSet cs = new ClauseSet();
     //     cs.add(c1);
@@ -66,10 +66,10 @@ public class App {
     //     cs.add(c);
     //     cs.add(c_prime);
 
-    //     System.out.println("Prima clausola: " + c1);
-    //     System.out.println("Seconda clausola: " + c2);
+    //     System.out.println("First clause: " + c1);
+    //     System.out.println("Second clause: " + c2);
     //     System.out.println("C: " + c);
-    //     System.out.println("C primo: " + c_prime);
+    //     System.out.println("C prime: " + c_prime);
     //     System.out.println();
 
     //     Resolution.setEnableSteps(true);
