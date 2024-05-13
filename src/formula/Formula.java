@@ -18,4 +18,6 @@ public abstract class Formula {
      * @return the representation of the formula as a set of clauses.
      */
     public abstract ClauseSet toClauseSet();
+
+    protected abstract ClauseSet classicClausification();
 }

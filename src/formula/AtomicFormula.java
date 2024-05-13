@@ -14,7 +14,11 @@ public class AtomicFormula extends Formula {
 
     //CONSTRUCTORS
     public AtomicFormula(String name) {
-        atm = new PropAtom(name);
+        this.atm = new PropAtom(name);
+    }
+
+    public AtomicFormula(PropAtom atm) {
+        this.atm = atm;
     }
 
 
@@ -59,10 +63,16 @@ public class AtomicFormula extends Formula {
     public ClauseSet toClauseSet() {
 
         // eta(this) = this
-        eta = new Eta(this);
-    
-        PropAtom t = eta.getPropVariable(this);
+        // eta = new Eta(this);
+        //TODO mettere: return this.classicClausification();
+        Literal t = this.toLiteral();
         ClauseSet cs = new ClauseSet(new LocalClause(t));
         return cs;
+    }
+
+
+    @Override
+    protected ClauseSet classicClausification() {
+        return new ClauseSet(new GlobalClause(atm));
     }
 }

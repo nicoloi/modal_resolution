@@ -133,6 +133,11 @@ public class Resolution {
             }
         }
 
+        //clear the sets of all keys in the map visited
+        for (Integer k : visited.keySet()) {
+            visited.get(k).clear();
+        }
+
         //apply LERES or GERES rule
         for (int i = 0; i < listCl.size(); i++) {
 

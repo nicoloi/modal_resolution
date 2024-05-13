@@ -4,6 +4,7 @@ import antlr4.ParseFormula;
 import formula.*;
 import static connective.Connective.*;
 import resolution.Resolution;
+// import literal.*;
 
 public class App {
     public static void main(String[] args) {
@@ -42,23 +43,23 @@ public class App {
     }
 
     // public static void main(String[] args) {
-    //     Clause c1 = new LocalClause(); //{a, b, #c}
-    //     c1.add(new PropAtom("a"));
-    //     c1.add(new PropAtom("b"));
-    //     c1.add(new ModalAtom("c"));
+    //     Clause c1 = new LocalClause(); //{#a, #b}
+    //     c1.add(new ModalAtom("a"));
+    //     c1.add(new ModalAtom("b"));
+    //     // c1.add(new ModalAtom("c"));
 
-    //     Clause c2 = new LocalClause(); //{d, e, ~#f}
-    //     c2.add(new PropAtom("d"));
-    //     c2.add(new PropAtom("e"));
-    //     c2.add(new NegModalAtom("f"));
+    //     Clause c2 = new LocalClause(); //{~#a, ~#b}
+    //     c2.add(new NegModalAtom("a"));
+    //     c2.add(new NegModalAtom("b"));
+    //     // c2.add(new NegModalAtom("f"));
 
-    //     GlobalClause c = new GlobalClause();
-    //     // c.add(new NegPropAtom("c"));
-    //     c.add(new PropAtom("f"));
+    //     GlobalClause c = new GlobalClause(); //{~a, b}
+    //     c.add(new NegPropAtom("a"));
+    //     c.add(new PropAtom("b"));
 
-    //     GlobalClause c_prime = new GlobalClause();
-    //     c_prime.add(new PropAtom("c"));
-    //     c_prime.add(new NegPropAtom("f"));
+    //     GlobalClause c_prime = new GlobalClause(); //{a, ~b}
+    //     c_prime.add(new PropAtom("a"));
+    //     c_prime.add(new NegPropAtom("b"));
 
     //     ClauseSet cs = new ClauseSet();
     //     cs.add(c1);

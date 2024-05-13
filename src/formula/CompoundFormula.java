@@ -200,15 +200,22 @@ public class CompoundFormula extends Formula {
 
     @Override
     public ClauseSet toClauseSet() {
-        eta = new Eta(this);
-    
-        // System.out.println("\n" + eta);
-    
-        PropAtom t = eta.getPropVariable(this);
-        ClauseSet cs = new ClauseSet(new LocalClause(t)); // {eta(phi)}
-        return cs.union(this.R(t)); // {eta(phi)}  U  R(G(eta(phi) <-> phi))
-    }
 
+
+        //TODO bisogna mettere {$p0} nel caso di f classica?
+
+        if (this.isClassic()) {
+            return this.classicClausification();
+        } else {
+            eta = new Eta(this);
+            
+            System.out.println("\n" + eta);
+            
+            PropAtom t = eta.getPropVariable(this);
+            ClauseSet cs = new ClauseSet(new LocalClause(t)); // {eta(phi)}
+            return cs.union(this.R(t)); // {eta(phi)}  U  R(G(eta(phi) <-> phi))
+        }
+    }
 
 
     /**
@@ -227,6 +234,14 @@ public class CompoundFormula extends Formula {
 
                 if (sub.getLeftSubformula() instanceof CompoundFormula) {
                     CompoundFormula sub_sub = (CompoundFormula) sub.getLeftSubformula();
+
+                    if (sub_sub.isClassic()) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(eta.getPropVariable(sub_sub)), sub_sub);
+
+                        return f1.classicClausification();
+                    }
+
                     return sub_sub.R(eta.getPropVariable(sub_sub));
                 } else {
                     return new ClauseSet();
@@ -254,6 +269,14 @@ public class CompoundFormula extends Formula {
 
                 if (psi instanceof CompoundFormula) {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
+
+                    if (cf_psi.isClassic()) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+                        return res.union(f1.classicClausification());
+                    }
+
                     return res.union(cf_psi.R(etaPsi)); // res  U  R(G(eta(psi) <-> psi))
                 }
 
@@ -285,15 +308,51 @@ public class CompoundFormula extends Formula {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
                     CompoundFormula cf_psi_prime = (CompoundFormula) psi_prime;
 
+                    if ((cf_psi.isClassic()) && (cf_psi_prime.isClassic())) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+
+
+                        return (res.union(f1.classicClausification())).union(f2.classicClausification());
+
+                    } else if (cf_psi.isClassic()) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+
+                        return (res.union(f1.classicClausification())).union(cf_psi_prime.R(etaPsi_prime));
+                    } else if (cf_psi_prime.isClassic()) {
+
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+
+
+                        return (res.union(cf_psi.R(etaPsi))).union(f2.classicClausification());
+                    }
+
                     // res  U  R(G(etaPsi <-> psi))  U  R(G(etaPsi_prime <-> psi_prime))
                     return (res.union(cf_psi.R(etaPsi))).union(cf_psi_prime.R(etaPsi_prime));
                 } else if (psi instanceof CompoundFormula) {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
 
+                    if (cf_psi.isClassic()) {
+                        
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+                        return res.union(f1.classicClausification());
+                    }
+
                     //res   U   R(G(etaPsi <-> psi))
                     return res.union(cf_psi.R(etaPsi));
                 } else if (psi_prime instanceof CompoundFormula) {
                     CompoundFormula cf_psi_prime = (CompoundFormula) psi_prime;
+
+                    if (cf_psi_prime.isClassic()) {
+
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+                        
+                        return res.union(f2.classicClausification());
+                    }
 
                     // res   U   R(G(etaPsi_prime <-> psi_prime))
                     return res.union(cf_psi_prime.R(etaPsi_prime));
@@ -316,6 +375,14 @@ public class CompoundFormula extends Formula {
 
                 if (psi instanceof CompoundFormula) {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
+
+                    if (cf_psi.isClassic()) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+                        return res.union(f1.classicClausification());
+                    }
+
                     return res.union(cf_psi.R(etaPsi)); // res  U  R(G(eta(psi) <-> psi))
                 }
 
@@ -345,15 +412,51 @@ public class CompoundFormula extends Formula {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
                     CompoundFormula cf_psi_prime = (CompoundFormula) psi_prime;
 
+                    if ((cf_psi.isClassic()) && (cf_psi_prime.isClassic())) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+
+
+                        return (res.union(f1.classicClausification())).union(f2.classicClausification());
+
+                    } else if (cf_psi.isClassic()) {
+
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+
+                        return (res.union(f1.classicClausification())).union(cf_psi_prime.R(etaPsi_prime));
+                    } else if (cf_psi_prime.isClassic()) {
+
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+
+
+                        return (res.union(cf_psi.R(etaPsi))).union(f2.classicClausification());
+                    }
+
                     // res  U  R(G(etaPsi <-> psi))  U  R(G(etaPsi_prime <-> psi_prime))
                     return (res.union(cf_psi.R(etaPsi))).union(cf_psi_prime.R(etaPsi_prime));
                 } else if (psi instanceof CompoundFormula) {
                     CompoundFormula cf_psi = (CompoundFormula) psi;
 
+                    if (cf_psi.isClassic()) {
+                        
+                        CompoundFormula f1 = new CompoundFormula(IFF, new AtomicFormula(etaPsi), psi);
+
+                        return res.union(f1.classicClausification());
+                    }
+
                     //res   U   R(G(etaPsi <-> psi))
                     return res.union(cf_psi.R(etaPsi));
                 } else if (psi_prime instanceof CompoundFormula) {
                     CompoundFormula cf_psi_prime = (CompoundFormula) psi_prime;
+
+                    if (cf_psi_prime.isClassic()) {
+
+                        CompoundFormula f2 = new CompoundFormula(IFF, new AtomicFormula(etaPsi_prime), psi_prime);
+                        
+                        return res.union(f2.classicClausification());
+                    }
 
                     // res   U   R(G(etaPsi_prime <-> psi_prime))
                     return res.union(cf_psi_prime.R(etaPsi_prime));
@@ -367,6 +470,82 @@ public class CompoundFormula extends Formula {
 
 
 
+    public boolean isClassic() {
+        return !this.toString().contains("#");
+    }
+
+
+
+
+    @Override
+    protected ClauseSet classicClausification() {
+
+        switch (this.mainConnective) {
+            case NOT:
+                Formula f1 = this.getLeftSubformula();
+
+                if (f1 instanceof AtomicFormula) {
+                    Literal l1 = ((AtomicFormula)f1).toLiteral();
+                    Literal oppL1 = l1.getOpposite();
+
+                    return new ClauseSet( new GlobalClause(oppL1) );    
+                } else {
+                    CompoundFormula cf1 = (CompoundFormula) f1;
+                    Connective mainC = cf1.getMainConnective();
+
+                    if(mainC == NOT) {
+                        //double negation
+                        Formula g1 = cf1.getLeftSubformula();
+
+                        return g1.classicClausification();
+                    } else if(mainC == OR){ 
+                        //De Morgan on ~(g1 | g2)
+                        Formula g1 = cf1.getLeftSubformula();   
+                        Formula g2 = cf1.getRightSubformula();
+                        CompoundFormula g  = new CompoundFormula(AND, 
+                            new CompoundFormula(NOT, g1), 
+                            new CompoundFormula(NOT, g2));  // ~g1 & ~g2
+                        
+                        return g.classicClausification();
+                    } else if (mainC == AND) {
+                        //De Morgan on ~(g1 & g2)
+                        Formula g1 = cf1.getLeftSubformula();   
+                        Formula g2 = cf1.getRightSubformula();
+                        CompoundFormula g = new CompoundFormula(OR, 
+                            new CompoundFormula(NOT, g1), 
+                            new CompoundFormula(NOT, g2));  // ~g1 | ~g2
+                        
+                        return g.classicClausification();
+                    } else {
+                        throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
+                    }
+                }
+            case AND:
+                Formula g1 = this.getLeftSubformula();   
+                Formula g2 = this.getRightSubformula();
+                ClauseSet cs1 = g1.classicClausification();
+                ClauseSet cs2 = g2.classicClausification();  
+
+                return cs1.union(cs2);
+            case OR:
+                g1 = this.getLeftSubformula();
+                g2 = this.getRightSubformula();
+                cs1 = g1.classicClausification();
+                cs2 = g2.classicClausification();
+
+                ClauseSet csResult = new ClauseSet();
+
+                for (Clause c1 : cs1) {
+                    for (Clause c2 : cs2) {
+                        csResult.add(c1.union(c2));
+                    }
+                }
+
+                return csResult;
+            default:
+                throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
+        }
+    } 
 
 
 }
