@@ -61,10 +61,6 @@ public class AtomicFormula extends Formula {
 
     @Override
     public ClauseSet toClauseSet() {
-
-        // eta(this) = this
-        // eta = new Eta(this);
-        //TODO mettere: return this.classicClausification();
         Literal t = this.toLiteral();
         ClauseSet cs = new ClauseSet(new LocalClause(t));
         return cs;

@@ -45,11 +45,6 @@ public class CompoundFormula extends Formula {
                 this.mainConnective = OR;
                 break;
             case AND:
-                //(f1 & f2) becomes ~(~f1 | ~f2)
-                // this.subFormulas = new Formula[1];
-                // this.subFormulas[0] = new CompoundFormula(OR, new CompoundFormula(NOT, f1),
-                //     new CompoundFormula(NOT, f2));
-                // this.mainConnective = NOT;
                 this.subFormulas = new Formula[2];
                 this.subFormulas[0] = f1;
                 this.subFormulas[1] = f2;
@@ -94,9 +89,21 @@ public class CompoundFormula extends Formula {
         }
 
         Objects.requireNonNull(f, "The formula is null");
+
+        if (mainConnective == BOX && f instanceof CompoundFormula) {
+            CompoundFormula cf = (CompoundFormula) f;
+
+            if (cf.mainConnective == BOX) {
+                //double BOX
+                this.subFormulas = new Formula[1];
+                this.subFormulas[0] = cf.getLeftSubformula();
+                this.mainConnective = mainConnective;
+                return;
+            }
+        }
+
         this.subFormulas = new Formula[1];
         this.subFormulas[0] = f;
-
         this.mainConnective = mainConnective;
     }
 
@@ -194,22 +201,14 @@ public class CompoundFormula extends Formula {
     }
 
 
-
-
-
-
     @Override
     public ClauseSet toClauseSet() {
-
-
-        //TODO bisogna mettere {$p0} nel caso di f classica?
-
         if (this.isClassic()) {
             return this.classicClausification();
         } else {
             eta = new Eta(this);
             
-            System.out.println("\n" + eta);
+            // System.out.println("\n" + eta);
             
             PropAtom t = eta.getPropVariable(this);
             ClauseSet cs = new ClauseSet(new LocalClause(t)); // {eta(phi)}
@@ -471,7 +470,9 @@ public class CompoundFormula extends Formula {
 
 
     public boolean isClassic() {
-        return !this.toString().contains("#");
+        String toStr = this.toString();
+        
+        return !toStr.contains("#(") && !toStr.contains("#~");
     }
 
 
@@ -516,6 +517,15 @@ public class CompoundFormula extends Formula {
                             new CompoundFormula(NOT, g2));  // ~g1 | ~g2
                         
                         return g.classicClausification();
+                    } else if (mainC == BOX) {
+                        Formula g1 = cf1.getLeftSubformula();
+                        
+                        if (g1 instanceof CompoundFormula) {
+                            throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
+                        }
+                        NegModalAtom nma = new NegModalAtom(((AtomicFormula) g1).getName());
+
+                        return new ClauseSet(new GlobalClause(nma));
                     } else {
                         throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
                     }
@@ -542,6 +552,16 @@ public class CompoundFormula extends Formula {
                 }
 
                 return csResult;
+            case BOX:
+                Formula left = this.getLeftSubformula();
+
+                if (left instanceof CompoundFormula) {
+                    throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
+                }
+
+                ModalAtom ma = new ModalAtom(((AtomicFormula) left).getName());
+
+                return new ClauseSet(new GlobalClause(ma));
             default:
                 throw new UnsupportedOperationException("the formula is not valid for classic clausification.");
         }
