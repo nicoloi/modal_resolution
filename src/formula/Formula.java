@@ -19,5 +19,9 @@ public abstract class Formula {
      */
     public abstract ClauseSet toClauseSet();
 
+    /**
+     * 
+     * @return the classic clausification of this formula.
+     */
     protected abstract ClauseSet classicClausification();
 }

@@ -41,40 +41,4 @@ public class App {
             System.out.println("The formula is a tautology");
         }
     }
-
-    // public static void main(String[] args) {
-    //     Clause c1 = new LocalClause(); //{#a, #b}
-    //     c1.add(new ModalAtom("a"));
-    //     c1.add(new ModalAtom("b"));
-    //     // c1.add(new ModalAtom("c"));
-
-    //     Clause c2 = new LocalClause(); //{~#a, ~#b}
-    //     c2.add(new NegModalAtom("a"));
-    //     c2.add(new NegModalAtom("b"));
-    //     // c2.add(new NegModalAtom("f"));
-
-    //     GlobalClause c = new GlobalClause(); //{~a, b}
-    //     c.add(new NegPropAtom("a"));
-    //     c.add(new PropAtom("b"));
-
-    //     GlobalClause c_prime = new GlobalClause(); //{a, ~b}
-    //     c_prime.add(new PropAtom("a"));
-    //     c_prime.add(new NegPropAtom("b"));
-
-    //     ClauseSet cs = new ClauseSet();
-    //     cs.add(c1);
-    //     cs.add(c2);
-    //     cs.add(c);
-    //     cs.add(c_prime);
-
-    //     System.out.println("First clause: " + c1);
-    //     System.out.println("Second clause: " + c2);
-    //     System.out.println("C: " + c);
-    //     System.out.println("C prime: " + c_prime);
-    //     System.out.println();
-
-    //     Resolution.setEnableSteps(true);
-
-    //     System.out.println(Resolution.isSatisfiable(cs));
-    // }
 }

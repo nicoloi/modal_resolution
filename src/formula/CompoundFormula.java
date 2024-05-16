@@ -468,7 +468,10 @@ public class CompoundFormula extends Formula {
     }
 
 
-
+    /**
+     * @return true, if there is no BOX operator in the formula, or in case there is,
+     *         it is applied only in the atomic variables.
+     */
     public boolean isClassic() {
         String toStr = this.toString();
         
