@@ -4,7 +4,6 @@ import antlr4.ParseFormula;
 import formula.*;
 import static connective.Connective.*;
 import resolution.Resolution;
-// import literal.*;
 
 public class App {
     public static void main(String[] args) {

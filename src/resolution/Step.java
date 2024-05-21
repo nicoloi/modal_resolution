@@ -15,6 +15,8 @@ public class Step {
     private int stepNumber; //the number of this step.
     private Clause premise1;
     private Clause premise2;
+    private Clause c;
+    private Clause c_prime;
     private Clause conclusion;
     private Literal lit1; //the literal used by all inference rules.
     private Literal lit2; //the literal used by LERES and GERES rules.
@@ -40,18 +42,26 @@ public class Step {
     }
     
     //constructor for GERES and LERES rules
-    public Step(Clause premise1, Clause premise2, Clause conclusion, Literal lit1, Literal lit2, String rule) {
+    public Step(Clause premise1, Clause premise2, Clause c, Clause c_prime, Literal lit1, Literal lit2) {
         this.premise1 = premise1;
         this.premise2 = premise2;
-        this.conclusion = conclusion;
+        this.c = c;
+        this.c_prime = c_prime;
         this.lit1 = lit1;
         this.lit2 = lit2;
-        this.inferenceRule = rule;
 
         this.stepNumber = count;
         this.isTautology = false;
         this.isAlreadyPresent = false;
         count++;
+    }
+
+    public void setConclusion(Clause conclusion) {
+        this.conclusion = conclusion;
+    }
+
+    public void setRule(String rule) {
+        this.inferenceRule = rule;
     }
 
     //METHODS
@@ -79,6 +89,12 @@ public class Step {
         res.append("STEP NUMBER " + stepNumber + ":\n");
         res.append("First premise: " + premise1.toString() + "\n");
         res.append("Second premise: " + premise2.toString() + "\n");
+
+        if (inferenceRule.equals("LERES") || inferenceRule.equals("GERES")) {
+            res.append("Third premise: " + c.toString() + "\n");
+            res.append("Fourth premise: " + c_prime.toString() + "\n");
+        }
+
         res.append("Conclusion: " + conclusion.toString() + "\n");
 
         if (inferenceRule.equals("LRES") || inferenceRule.equals("GRES")) {

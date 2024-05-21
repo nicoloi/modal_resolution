@@ -158,23 +158,25 @@ public class Resolution {
 
                         addCoupleInMap(index1, index2);
                         Clause resolvent = null;
-                        Step step = null;
+                        Step st = null;
 
                         if ((c1 instanceof GlobalClause) && (c2 instanceof GlobalClause)) {
                             //apply GERES rule
                             resolvent = GERES((GlobalClause) c1, (GlobalClause) c2, literals[0], literals[1]);
 
                             if (enableSteps) {
-                                step = new Step(c1, c2, resolvent, literals[0], literals[1], "GERES");
-                                trace.add(step);
+                                st = trace.get(trace.size() - 1);
+                                st.setConclusion(resolvent);
+                                st.setRule("GERES");
                             }
                         } else {
                             //apply LERES rule
                             resolvent = LERES((LocalClause) c1, (LocalClause) c2, literals[0], literals[1]);
 
                             if (enableSteps) {
-                                step = new Step(c1, c2, resolvent, literals[0], literals[1], "LERES");
-                                trace.add(step);
+                                st = trace.get(trace.size() - 1);
+                                st.setConclusion(resolvent);
+                                st.setRule("LERES");
                             }
                         } 
 
@@ -187,10 +189,10 @@ public class Resolution {
 
                         if (resolvent.isTautology()) {
                             if (enableSteps)
-                                step.setTautology();
+                                st.setTautology();
                         } else if (listCl.contains(resolvent)) {
                             if (enableSteps)
-                                step.setAlreadyPresent();
+                                st.setAlreadyPresent();
                         } else {
                             visited.put(resolvent.getIndex(), new HashSet<>());
                             listCl.add(resolvent);
@@ -257,10 +259,22 @@ public class Resolution {
                             (listCl.contains(c_2) && listCl.contains(c_prime_2)) ||
                             (listCl.contains(union1) && listCl.contains(union2)))
                         {
-                           Literal[] lit = new Literal[2];
-                           lit[0] = l1;
-                           lit[1] = l2;
-                           return lit;
+                            if (enableSteps) {
+                                Step st = null;
+                                if (listCl.contains(c_1)) {
+                                    st = new Step(c1, c2, c_1, c_prime_1, l1, l2);
+                                } else if (listCl.contains(c_2)) {
+                                    st = new Step(c1, c2, c_2, c_prime_2, l1, l2);
+                                } else if (listCl.contains(union1)) {
+                                    st = new Step(c1, c2, union1, union2, l1, l2);
+                                }
+                                trace.add(st);
+                            }
+                            
+                            Literal[] lit = new Literal[2];
+                            lit[0] = l1;
+                            lit[1] = l2;
+                            return lit;
                         }
                     }
                 }
